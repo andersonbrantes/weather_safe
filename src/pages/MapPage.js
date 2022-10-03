@@ -5,7 +5,7 @@ import "./MapPage.css";
 const MapPage = () => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: "AIzaSyBTEghxJTW6UNdkIdSWdn5pUOxoPmO9GSo"
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API
   })
 
   return (
