@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal } from '../modal';
+import { EventModal } from '../event_modal';
 
 import MapPage from '../../pages/MapPage';
 
@@ -34,7 +34,7 @@ export class MapContainer extends Component {
         <MapPage onClick={this.showModal}/>
 
         {this.state.isShown ? (
-          <Modal
+          <EventModal
             onSubmit={this.props.onSubmit}
             modalRef={(n) => (this.modal = n)}
             buttonRef={(n) => (this.closeButton = n)}
