@@ -1,9 +1,7 @@
 const express = require('express');
 const app = express();
 
-app.get("/", (req, res) => {
-  // Serve react App
-})
+app.use(express.static('dist'))
 
 app.get("/api/v1/notifications", (req, res) => {
   let weatherNotifications = [
