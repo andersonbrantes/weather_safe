@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { MapContainer } from './components/map_container';
 import { NotificationContainer } from 'react-notifications';
 import FloatNotification from './components/float_notifications';
@@ -6,17 +7,16 @@ import './App.css';
 import 'react-notifications/lib/notifications.css';
 
 function App() {
-  let weatherNotifications = [
-    { "type": "warning", "message": "Mensagem de teste" },
-    { "type": "error", "message": "Mensagem de teste" }
-  ]
+  const [backendData, setBackendData] = useState([{}]);
 
-  // Teste para criar notificacoes
-  {
-    weatherNotifications.forEach((notification) => {
-      return FloatNotification.createNotification(notification.type);
-    })
-  }
+  useEffect(() => {
+    const axios = require('axios').default;
+
+    axios.get("/api/v1/notifications").then((response) => {
+        setBackendData(response.data);
+      }
+    ).catch((error) => {console.log(error)})
+  }, [])
 
   const onSubmit = (event) => {
     event.preventDefault(event);
@@ -28,9 +28,17 @@ function App() {
 
   return (
     <div>
+      {(typeof backendData.notifications === 'undefined') ? (
+        console.log('Loading...')
+      ) : (
+        
+        backendData.notifications.forEach((notification) => {
+          return FloatNotification.createNotification(notification.type);
+        })
+      )}
       <NotificationContainer />
             
-      <MapContainer onSubmit={onSubmit} />      
+      <MapContainer onSubmit={onSubmit} />
     </div>
   );
 }
