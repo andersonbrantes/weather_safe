@@ -1,7 +1,36 @@
-const express = require('express');
+const express =  require('express');
 const app = express();
 
+const sqlite3 = require('sqlite3');
+const sqlite = require('sqlite');
+
+async function main() {
+  try {
+    const db = await sqlite.open({ filename: './weathersafe.sqlite', driver: sqlite3.Database });
+
+    await db.run(`create table if not exists people (id integer primary key, name text)`);
+
+    await db.run('insert into people (name) values (?)', ['Gabriel']);
+
+    const rows = await db.all('select * from people');
+    console.log(rows);    
+
+    await db.close();
+
+    return rows;
+  } catch (error) {
+    console.log(error);
+    return { error: error };
+  }
+}
+
 app.use(express.static('dist'))
+
+app.get("/api/v1/people", async (req, res) => {
+  let people = await main();
+
+  res.json(people);
+})
 
 app.get("/api/v1/notifications", (req, res) => {
   let weatherNotifications = [
@@ -26,5 +55,5 @@ app.get("/api/v1/events", (req, res) => {
 const port = process.env.PORT || 5000
 
 app.listen(port, () => {
-  console.log('Express started on port 5000')
+  console.log('Express started on port ', port)
 })
