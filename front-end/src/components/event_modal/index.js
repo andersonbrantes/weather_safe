@@ -2,14 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { EventRegisterForm } from '../event_register_form';
 import FocusTrap from 'focus-trap-react';
+
 export const EventModal = ({
   onClickOutside,
   onKeyDown,
   modalRef,
   buttonRef,
   closeModal,
-  onSubmit,
-  position
+  position,
+  reload
 }) => {
   return ReactDOM.createPortal(
     <FocusTrap>
@@ -35,7 +36,7 @@ export const EventModal = ({
             </span>
           </button>
           <div className="modal-body">
-            <EventRegisterForm onSubmit={onSubmit} position={position} />
+            <EventRegisterForm position={position} closeModal={closeModal} reload={reload} />
           </div>
         </div>
       </aside>
