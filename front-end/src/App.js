@@ -8,37 +8,35 @@ import 'react-notifications/lib/notifications.css';
 
 function App() {
   const [backendData, setBackendData] = useState([{}]);
+  const notificationTypes = {
+    "1": "error",
+    "2": "warning",
+    "3": "success",
+    "4": "info"
+  }
 
   useEffect(() => {
     const axios = require('axios').default;
 
     axios.get("/api/v1/notifications").then((response) => {
+      console.log(response)
         setBackendData(response.data);
       }
     ).catch((error) => {console.log(error)})
   }, [])
 
-  const onSubmit = (event) => {
-    event.preventDefault(event);
-    console.log(event.target.name.value);
-    console.log(event.target.email.value);
-    console.log(event.target.latitude.value);
-    console.log(event.target.longitude.value);
-  };
-
   return (
     <div>
-      {(typeof backendData.notifications === 'undefined') ? (
+      {(typeof backendData === 'undefined') ? (
         console.log('Loading...')
       ) : (
-        
-        backendData.notifications.forEach((notification) => {
-          return FloatNotification.createNotification(notification.type);
+        backendData.forEach((notification) => {          
+          return FloatNotification.createNotification(notificationTypes[notification.kind], notification.content);
         })
       )}
       <NotificationContainer />
-            
-      <MapContainer onSubmit={onSubmit} />
+
+      <MapContainer />
     </div>
   );
 }
