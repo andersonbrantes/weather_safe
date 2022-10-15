@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 
 import "./MapPage.css";
 
-const MapPage = ({ onClick }) => {
+const MapPage = ({ onClick, refresh }) => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API
@@ -24,9 +24,9 @@ const MapPage = ({ onClick }) => {
         setBackendData(response.data);
       }
     ).catch((error) => {console.log('Erro da requisicao', error)})
-  }, [])
+  }, [refresh])
 
-  let initialPosition = (typeof backendData.events === 'undefined') ? defaultPosition : backendData.events[0].position;
+  let initialPosition = (typeof backendData === 'undefined') ? defaultPosition : { lat: backendData[0].latitude, lng: backendData[0].longitude };
 
   return (
     <div className="map">
@@ -47,9 +47,6 @@ const MapPage = ({ onClick }) => {
             onLoad={() => {}}
             onUnmount={() => {}}
             onClick={ev => {
-              console.log("latitide = ", ev.latLng.lat());
-              console.log("longitude = ", ev.latLng.lng());
-
               let position = {
                 latitude: ev.latLng.lat(),
                 longitude: ev.latLng.lng()
@@ -59,11 +56,11 @@ const MapPage = ({ onClick }) => {
             }}
           >
             { 
-              (typeof backendData.events === 'undefined') ? (
+              (typeof backendData === 'undefined') ? (
                 console.log('Loading...')
               ) : ( 
-                backendData.events.map((event, i) => {
-                  return <Marker key={i} position={event.position} options={{
+                backendData.map((event, i) => {
+                  return <Marker key={i} position={{ lat: event.latitude, lng: event.longitude }} options={{
                     label: {
                       text: "Position test",
                       className: "map-marker"
