@@ -1,6 +1,26 @@
 import React from 'react';
+const axios = require('axios').default;
 
-export const EventRegisterForm = ({ onSubmit, position }) => {
+export const EventRegisterForm = ({ position, closeModal, reload }) => {  
+  const onSubmit = (event) => {
+    event.preventDefault(event);
+
+    const newEvent = {
+      type: event.target.type.value,
+      description: event.target.description.value,
+      latitude: event.target.latitude.value,
+      longitude: event.target.longitude.value
+    };
+
+    axios.post('/api/v1/events', newEvent)
+        .then((response) => {
+          console.log('deu certo', response);
+          closeModal();
+          reload();
+        });
+
+  };
+
   return (
     <form onSubmit={onSubmit}>
       <input type="hidden" className="form-control" id="latitude" value={position.latitude} />
@@ -26,4 +46,5 @@ export const EventRegisterForm = ({ onSubmit, position }) => {
     </form>
   );
 };
+
 export default EventRegisterForm;
