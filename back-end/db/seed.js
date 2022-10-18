@@ -1,7 +1,7 @@
 const sqlite3 = require('sqlite3');
 const sqlite = require('sqlite');
 
-async function main() {
+exports.run = async function() {
   console.log("Running SQL seed...")
   try {
     const db = await sqlite.open({ filename: './weathersafe.sqlite', driver: sqlite3.Database });
@@ -39,5 +39,3 @@ async function main() {
   }
   console.log("SQL seed is complete!");
 }
-
-main();

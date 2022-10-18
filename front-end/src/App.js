@@ -19,7 +19,6 @@ function App() {
     const axios = require('axios').default;
 
     axios.get("/api/v1/notifications").then((response) => {
-      console.log(response)
         setBackendData(response.data);
       }
     ).catch((error) => {console.log(error)})
