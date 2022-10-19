@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useReducer } from 'react';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import LandSlideMarker from '../assets/images/deslizamento.png';
+import FloodMarker from '../assets/images/alagamento.png';
+import DangerMarker from '../assets/images/perigo.png';
 
 import "./MapPage.css";
 
@@ -15,6 +18,18 @@ const MapPage = ({ onClick, refresh }) => {
     lng: -48.551262
   };
 
+  const markerTypes = {
+    1: "Deslizamento",
+    2: "Alagamento",
+    3: "Pessoa ferida"
+  }
+
+  const markerIcons = {
+    1: LandSlideMarker,
+    2: FloodMarker,
+    3: DangerMarker
+  }
+
   const [backendData, setBackendData] = useState([{}]);
 
   useEffect(() => {
@@ -26,7 +41,7 @@ const MapPage = ({ onClick, refresh }) => {
     ).catch((error) => {console.log('Erro da requisicao', error)})
   }, [refresh])
 
-  let initialPosition = (typeof backendData === 'undefined') ? defaultPosition : { lat: backendData[0].latitude, lng: backendData[0].longitude };
+  let initialPosition = (typeof backendData === 'undefined') || !backendData.length ? defaultPosition : { lat: backendData[0].latitude, lng: backendData[0].longitude };
 
   return (
     <div className="map">
@@ -60,11 +75,13 @@ const MapPage = ({ onClick, refresh }) => {
                 console.log('Loading...')
               ) : ( 
                 backendData.map((event, i) => {
+                  console.log(event);
                   return <Marker key={i} position={{ lat: event.latitude, lng: event.longitude }} options={{
                     label: {
-                      text: "Position test",
+                      text: markerTypes[event.type],
                       className: "map-marker"
-                    }
+                    },
+                    icon: markerIcons[event.type]
                   }} >
                   </Marker>              
                 })

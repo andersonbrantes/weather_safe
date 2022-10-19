@@ -29,9 +29,9 @@ export const EventRegisterForm = ({ position, closeModal, reload }) => {
       <div className="form-group">
         <label htmlFor="type">Tipo</label>
         <select id="type" className="form-control">
-          <option value="deslizamento">Deslizamento</option>
-          <option value="alagamento">Alagamento</option>
-          <option value="pessoa_ferida">Pessoa ferida</option>
+          <option value="1">Deslizamento</option>
+          <option value="2">Alagamento</option>
+          <option value="3">Pessoa ferida</option>
         </select>
       </div>
       <div className="form-group">
