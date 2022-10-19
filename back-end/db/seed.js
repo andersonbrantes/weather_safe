@@ -18,7 +18,7 @@ exports.run = async function() {
     await db.run('create table if not exists events ( \
       id integer primary key, \
       description text not null, \
-      kind integer, \
+      type integer, \
       level integer, \
       latitude real, \
       longitude real \

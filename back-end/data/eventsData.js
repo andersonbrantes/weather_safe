@@ -10,8 +10,8 @@ exports.getEvents = async function() {
 exports.saveEvent = async function(event) {
   const db = await dbConfig.sqlite.open(dbConfig.dbConfig);
   let newEvent = await db.run('insert into events \
-  (description, kind, level, latitude, longitude) \
-  values (?, ?, ?, ?, ?)', [event.description, event.kind, event.level, event.latitude, event.longitude]);
+  (description, type, level, latitude, longitude) \
+  values (?, ?, ?, ?, ?)', [event.description, parseInt(event.type), event.level, event.latitude, event.longitude]);
   db.close();
   return newEvent;
 }
