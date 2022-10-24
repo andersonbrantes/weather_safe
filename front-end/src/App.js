@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { MapContainer } from './components/map_container';
 import { NotificationContainer } from 'react-notifications';
 import FloatNotification from './components/float_notifications';
+import { Header } from './components/header';
+import { HeaderInfo } from './components/header_info';
 
 import './App.css';
 import 'react-notifications/lib/notifications.css';
@@ -25,7 +27,8 @@ function App() {
   }, [])
 
   return (
-    <div>
+    <div id="application-container">
+      
       {(typeof backendData === 'undefined') ? (
         console.log('Loading...')
       ) : (
@@ -36,6 +39,8 @@ function App() {
       <NotificationContainer />
 
       <MapContainer />
+      <Header />
+      <HeaderInfo />
     </div>
   );
 }
