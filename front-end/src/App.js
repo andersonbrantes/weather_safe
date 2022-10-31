@@ -40,7 +40,7 @@ function App() {
 
       <MapContainer />
       <Header />
-      <HeaderInfo />
+      <HeaderInfo />      
     </div>
   );
 }
